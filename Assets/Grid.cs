@@ -29,13 +29,14 @@ public class Grid : MonoBehaviour {
 			Vector3.forward * gridWorldSize.y / 2;
 
 		Gizmos.color = Color.green;
+		Gizmos.DrawCube (worldBottomLeft, Vector3.one * 2f);
 
 		for (int x = 0; x < gridSizeX; x++) {
 			for (int y = 0; y < gridSizeY; y++) {
 				for (int z = 0; z < gridSizeZ; z++) {
 					Vector3 worldPoint = worldBottomLeft + Vector3.right * (x + nodeDiameter + nodeRadius - 1) +
-					                    Vector3.forward * (y + nodeDiameter + nodeRadius - 1) + 
-										Vector3.up * (z + nodeDiameter + nodeRadius - 1);
+					                    Vector3.up * (y + nodeDiameter + nodeRadius - 1) + 
+						Vector3.forward * (z + nodeDiameter + nodeRadius - 1);
 					bool walkable = !(Physics.CheckSphere (worldPoint, nodeRadius, unwalkableMask));
 					grid [x, y, z] = new Node (walkable, worldPoint);
 				}
@@ -46,7 +47,7 @@ public class Grid : MonoBehaviour {
 
 	public Node NodeFromWorldPoint(Vector3 worldPosition) {
 		float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
-		float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
+		float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
 		float percentZ = (worldPosition.z + gridWorldSize.z / 2) / gridWorldSize.z;
 		percentX = Mathf.Clamp01 (percentX);
 		percentY = Mathf.Clamp01 (percentY);
@@ -66,7 +67,7 @@ public class Grid : MonoBehaviour {
 		if (grid != null) {
 			Node playerNode = NodeFromWorldPoint (player.position);
 			foreach (Node n in grid) {
-				Gizmos.color = (n.walkable) ? Color.white : Color.red;
+				Gizmos.color = (n.walkable) ? new Color(255, 255, 255, 0.02f) : Color.red;
 				if (playerNode == n) {
 					Gizmos.color = Color.cyan;				
 				}
